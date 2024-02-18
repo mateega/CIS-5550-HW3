@@ -1,13 +1,21 @@
 package cis5550.test;
 
 import java.util.*;
+
 import java.nio.file.*;
 import java.io.*;
 import java.net.*;
 import javax.net.ssl.*;
+
+import cis5550.tools.Logger;
+import cis5550.webserver.Server;
+
 import java.security.cert.*;
 
 public class HW3TestClient extends GenericTest {
+	
+  private static final Logger logger = Logger.getLogger(Server.class);
+
 
   HW3TestClient() {
     super();
@@ -87,6 +95,23 @@ public class HW3TestClient extends GenericTest {
         testFailed("The server returned \""+response+"\", but we expected \""+i+"\"");
       testSucceeded();
     } catch (Exception e) { testFailed("An exception occurred: "+e, false); e.printStackTrace(); }
+    
+    // ADDED TEST
+//    if (true) try {
+//        startTest("hello world", "hello world", 5);
+//        Socket s = openSocket(8080);
+//        PrintWriter out = new PrintWriter(s.getOutputStream());
+//        Random rx = new Random();
+//        out.print("GET / HTTP/1.1\r\nHost: localhost\r\n\r\n");
+//        out.flush();
+//        Response r = readAndCheckResponse(s, "response");
+//        if (r.statusCode != 200)
+//          testFailed("The server returned a "+r.statusCode+" response, but we were expecting a 200 OK. Here is what was in the body:\n\n"+dump(r.body));
+//        if (!r.body().equals("Hello World!")) 
+//          testFailed("The server returned a response, but it was not the Hello World! we expected. Here is what we received instead:\n\n"+dump(r.body));
+//        s.close();
+//        testSucceeded();
+//      } catch (Exception e) { testFailed("An exception occurred: "+e, false); e.printStackTrace(); }
 
     if (tests.contains("http")) try {
       startTest("http", "GET request via HTTP", 5);
@@ -156,6 +181,7 @@ public class HW3TestClient extends GenericTest {
     } catch (Exception e) { testFailed("An exception occurred: "+e, false); e.printStackTrace(); }
 
     if (tests.contains("expire")) try {
+      
       startTest("expire", "Session expiration", 5);
       Socket s = openSocket(8080);
       String val = randomAlphaNum(5,10);
@@ -189,7 +215,6 @@ public class HW3TestClient extends GenericTest {
       s.close();
 
       Thread.sleep(1500);
-
       s = openSocket(8080);
       out = new PrintWriter(s.getOutputStream());
       out.print("GET /perm/"+val+" HTTP/1.1\r\nHost: localhost\r\nCookie: SessionID="+cookie+"\r\n\r\n");

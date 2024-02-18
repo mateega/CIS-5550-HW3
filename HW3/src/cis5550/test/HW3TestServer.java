@@ -8,10 +8,14 @@ import cis5550.webserver.Session;
 
 public class HW3TestServer {
 	public static void main(String args[]) throws Exception {
-    port(8080);
-    securePort(8443);
-    get("/echo/:x", (req,res) -> { return req.params("x"); });
-    get("/session", (req,res) -> { Session s = req.session(); if (s == null) return "null"; return s.id(); });
-    get("/perm/:x", (req,res) -> { Session s = req.session(); s.maxActiveInterval(1); if (s.attribute("test") == null) s.attribute("test", req.params("x")); return s.attribute("test"); });
+//    port(8080);
+//    get("/", (req,res) -> { return "Hello World!"; });
+//    get("/echo/:x", (req,res) -> { return req.params("x"); });
+//    get("/session", (req,res) -> { Session s = req.session(); if (s == null) return "null"; return s.id(); });
+//    get("/perm/:x", (req,res) -> { Session s = req.session(); s.maxActiveInterval(1); if (s.attribute("test") == null) s.attribute("test", req.params("x")); return s.attribute("test"); });
+    
+	// securePort(8443);
+    securePort(443);
+    get("/", (req,res) -> { return "Hello World - this is Spencer Mateega"; });
   }
 }
